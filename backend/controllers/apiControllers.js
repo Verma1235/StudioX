@@ -94,15 +94,81 @@ const fetchUsers = (req, res) => {
 
 const cardData = (req, res) => {
     try {
-        if (!isDBconnected()) {
-            return res.status(500).send({
-                resolve: false,
-                message: "Database connection Issue !!"
-            })
-        }
+        const { id, email, role } = req.user;
+        if (role != "ADMIN" && role != "DEVELOPER" && role != "COADMIN") return res.status(401).send({ success: false, message: "you haven't permission to access card data", role: role });
+        const sql = `
+SELECT 
+    COUNT(*) AS CLIENTS,
+
+    COUNT(CASE WHEN \`STATUS\` = 1 THEN 1 END) AS ACTIVE_CLIENTS,
+    COUNT(CASE WHEN \`STATUS\` = 0 OR  \`STATUS\` = 2 THEN 1 END) AS BLOCKED_CLIENTS,
+  
+
+    COUNT(CASE WHEN \`ROLE\` = 'USER' THEN 1 END) AS USERS,
+    COUNT(CASE WHEN \`ROLE\` = 'EMPLOYEE' THEN 1 END) AS EMPLOYEES,
+    COUNT(CASE WHEN \`ROLE\` = 'ADMIN' THEN 1 END) AS ADMINS,
+    COUNT(CASE WHEN \`ROLE\` = 'COADMIN' THEN 1 END) AS COADMINS,
+    COUNT(CASE WHEN \`ROLE\` = 'DEVELOPER' THEN 1 END) AS DEVELOPERS,
+
+    COUNT(CASE WHEN \`ROLE\` = 'USER' 
+        AND (\`STATUS\` = 0 OR \`STATUS\` = 2) 
+    THEN 1 END) AS BLOCKED_USERS,
+
+    COUNT(CASE WHEN \`ROLE\` = 'EMPLOYEE' 
+        AND (\`STATUS\` = 0 OR \`STATUS\` = 2) 
+    THEN 1 END) AS BLOCKED_EMPLOYEES,
+
+    COUNT(CASE WHEN \`ROLE\` = 'ADMIN' 
+        AND (\`STATUS\` = 0 OR \`STATUS\` = 2) 
+    THEN 1 END) AS BLOCKED_ADMINS,
+
+    COUNT(CASE WHEN \`ROLE\` = 'COADMIN' 
+        AND (\`STATUS\` = 0 OR \`STATUS\` = 2) 
+    THEN 1 END) AS BLOCKED_COADMINS,
+
+    COUNT(CASE WHEN \`ROLE\` = 'DEVELOPER' 
+        AND (\`STATUS\` = 0 OR \`STATUS\` = 2) 
+    THEN 1 END) AS BLOCKED_DEVELOPERS
+
+FROM \`users\`;
+`;
+        db.query(sql, [], (err, result) => {
+            if (err) {
+                return res.status(401).json({
+                    success: false,
+                    message: "error in fetching all card data",
+                    error: err,
+                });
+            }
+            const sql2 = "SELECT * FROM `carddata`";
+            db.query(sql2, (err2, result2) => {
+                if (err2) {
+                    return res.status(500).send({
+                        success: false,
+                        message: "server error while fetching card data !!",
+                        error: err2,
+                    })
+                }
+                res.status(200).send({
+                    success: true,
+                    message: "successfully all cardData fetched !!",
+                    data: result,
+                    carddata: result2,
+                });
+            });
+
+
+
+
+        });
 
     } catch (error) {
+        console.log(error);
 
+        return res.status(401).json({
+            success: false,
+            message: "error in fetching all card data"
+        });
     }
 }
 
@@ -147,19 +213,19 @@ const tokenValidator = (req, res) => {
     }
 };
 
-const assignOptions=(req,res)=>{
+const assignOptions = (req, res) => {
 
-    try{
-        const {id,email,role}=req.user;
+    try {
+        const { id, email, role } = req.user;
 
-        sql=`SELECT ${role || 'USER' } FROM options WHERE ID = 16`;
+        sql = `SELECT ${role || 'USER'} FROM options WHERE ID = 16`;
 
-        db.query(sql,(err,result)=>{
+        db.query(sql, (err, result) => {
 
-            
+
         })
 
-    }catch(error){
+    } catch (error) {
 
     }
 
@@ -167,4 +233,45 @@ const assignOptions=(req,res)=>{
 
 }
 
-export { fetchUsers, cardData, tokenValidator , assignOptions};
+const fetchAllOptions = (req, res) => {
+    try {
+        const { id, email, role } = req.user;
+        const sql = "SELECT * FROM `all_options` WHERE `role` IN (?, ?) AND `show` IN (?, ?)";
+
+        db.query(sql, ["USER", role, 1, 2], (err, result) => {
+
+            if (err) {
+                return res.status(401).json({
+                    success: false,
+                    message: "error in fetching all options",
+                    error: err,
+                });
+            }
+
+            res.status(200).send({
+                success: true,
+                message: "successfully all options fetched !!",
+                data: result
+            });
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(401).json({
+            success: false,
+            message: "error in fetching all options"
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+export { fetchUsers, cardData, tokenValidator, assignOptions, fetchAllOptions };

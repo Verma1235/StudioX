@@ -9,12 +9,15 @@ async function tokenValidator() {
   }
 
   try {
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_DATA_URL}/api/token`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_DATA_URL}/api/token`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     // console.log("STATUS:", res.status);
 
@@ -24,8 +27,8 @@ async function tokenValidator() {
 
     return data.success === true;
   } catch (err) {
-    // console.log("ERROR:", err);
-    return false;
+    console.log("ERROR:", err);
+    return 2;
   }
 }
 
@@ -38,6 +41,9 @@ async function checktoken(setrole) {
     setrole(1);
   } else {
     setrole(0);
+    if (valid == 2) {
+      setrole(7);
+    }
   }
 }
 

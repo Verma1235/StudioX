@@ -1,12 +1,17 @@
 import { Icons } from "../../svg/Icons";
 
-const CardView = ({ DATA ,handlePopUpToggle}) => {
-  const percentage =
-    Number(DATA.data.percentage).toFixed(1) >= 100
-      ? 100
-      : Number(DATA.data.percentage).toFixed(1);
+const CardView = ({ DATA, total, blocked, handlePopUpToggle }) => {
+  // console.log(Total)
+  const active = Number(total) - Number(blocked);
+const percentage =
+  Number(total) > 0
+    ? (((Number(total) - Number(blocked || 0)) * 100) / Number(total)).toFixed(1)
+    : "0.0";
+  // Number( (Number(active)*100)/Number(total)).toFixed(1) >= 100
+  //   ? 100
+  //   : ;
   const color = DATA?.iconClr || "#00d5ff";
-
+  // alert(percentage)
   return (
     <>
       <div
@@ -15,13 +20,14 @@ const CardView = ({ DATA ,handlePopUpToggle}) => {
         {/* Left Side: Icon and Stats */}
         <div className="w-3/5 h-full p-3 flex flex-col justify-between">
           <div
-            className={`w-10 h-10 bg-[${DATA?.iconBg||"#00d5ff"}] rounded-lg flex items-center justify-center`}
+            className={`w-10 h-10 rounded-lg flex items-center justify-center`}
+          style={{background:DATA?.iconBg ||"#00d5ff"}}
           >
-            <Icons icon={DATA?.icon} color={DATA?.iconClr||"#00d5ff"} />
+            <Icons icon={DATA?.icon} color={DATA?.iconClr || "#00d5ff"} />
           </div>
           <div>
             <h2 className="font-bold text-2xl text-slate-900 leading-none">
-              {DATA.data.total >= 1000 ? DATA.data.total : DATA.data.total}
+              {total >= 1000 ? total : total}
             </h2>
             <div className="text-sm text-amber-900 font-mono mt-1">
               {DATA.name}
@@ -32,9 +38,9 @@ const CardView = ({ DATA ,handlePopUpToggle}) => {
         {/* Right Side: Options and Progress */}
         <div className="w-2/5 h-full flex flex-col">
           {/* Dots Icon Container */}
-          <div className="w-full h-[30%] flex justify-end items-center pr-1 ">
+          <div className="w-full h-[30%] flex justify-end items-center pr-1 " data-cardid={DATA?.cardid}>
             <svg
-            onClick={handlePopUpToggle}
+              onClick={handlePopUpToggle}
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
@@ -74,10 +80,16 @@ const CardView = ({ DATA ,handlePopUpToggle}) => {
           </div>
           <div className="w-full h-[20%] text-center ">
             <div className="flex items-center justify-center  gap-y-0 h-full w-full">
-              <div className={`font-bold text-[10px] p-2 text-[${DATA.iconClr}] leading-none`}>
-               {DATA.data.active}/{DATA.data.total >= 1000 ? DATA.data.total : DATA.data.total}
+              <div
+                className={`font-bold text-[10px] p-2 text-[${DATA.iconClr}] leading-none`}
+              >
+                {active}/{total >= 1000 ? total : total}
               </div>
-              <div className={`text-[10px] text-[${DATA.iconBg}] font-mono mt-1`}>Active</div>
+              <div
+                className={`text-[10px] text-[${DATA.iconBg}] font-mono mt-1`}
+              >
+                Active
+              </div>
             </div>
           </div>
         </div>

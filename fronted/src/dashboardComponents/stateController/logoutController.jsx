@@ -1,6 +1,6 @@
 import { Toast } from "../ToastContainer";
 
-function logout(setrole) {
+function Logout(setrole) {
   setrole(7);
   localStorage.removeItem("token");
 
@@ -9,4 +9,4 @@ function logout(setrole) {
   setrole(0);
 }
 
-export { logout };
+export { Logout };

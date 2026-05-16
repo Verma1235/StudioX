@@ -6,6 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaInstagram, FaGithub } from "react-icons/fa";
 import { Toast } from "../dashboardComponents/ToastContainer";
 import FormController from "../dashboardComponents/FormHandeller/FormHandeller";
+import {dev_pic} from "../img/img"
 const Login_signup = ({setrole}) => {
   const [isLogin, setIsLogin] = useState(true);
 
@@ -64,7 +65,7 @@ const Login_signup = ({setrole}) => {
         {/* LEFT SECTION: Brand Showcase */}
         <div className="hidden md:flex relative w-1/2 overflow-hidden group">
           <img
-            src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2070&auto=format&fit=crop"
+            src={dev_pic || "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2070&auto=format&fit=crop"}
             alt="Photography Studio"
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           />

@@ -6,7 +6,7 @@ import COADMIN from "./pages/Coadmin";
 import DEVELOPER from "./pages/Developer";
 import EMPLOYEE from "./pages/Employee";
 import GENERAlPAGE from "./pages/GeneralHome";
-import { useUserData } from "./apidata/userdata";
+// import { useUserData } from "./apidata/userdata";
 import ToastContainer from "./dashboardComponents/ToastContainer";
 import ProcessingScreen from "./pages/ProcessingScreen";
 import {
@@ -26,7 +26,7 @@ const assignRole = [
 
 function App() {
   // switching role
-  const [status, setStatus] = useState({ role: "" });
+  const [status, setStatus] = useState({ role:assignRole[7]  });
 
   function setrole(roleindex) {
     setStatus({ role: assignRole[roleindex] });
