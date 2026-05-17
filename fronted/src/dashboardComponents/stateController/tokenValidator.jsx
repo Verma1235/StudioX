@@ -33,6 +33,7 @@ async function tokenValidator() {
 }
 
 async function checktoken(setrole) {
+    setrole(7);
   const valid = await tokenValidator();
 
   // console.log("VALID:", valid);
@@ -40,7 +41,7 @@ async function checktoken(setrole) {
   if (valid) {
     setrole(1);
   } else {
-    setrole(0);
+    setrole(6);
     if (valid == 2) {
       setrole(7);
     }

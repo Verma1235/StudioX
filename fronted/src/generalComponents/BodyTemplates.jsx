@@ -5,7 +5,7 @@ import Sidemenu from "../dashboardComponents/Sidemenu";
 import MainContentArea from "../dashboardComponents/MainContentArea";
 import { MessageContainer } from "../dashboardComponents/MessageContainer";
 const BodyTemplates = ({setrole}) => {
-  const [sidemenuflag, setSideMenuFlag] = useState(1);
+  const [sidemenuflag, setSideMenuFlag] = useState(true);
   const [messageContainer,setmessageContainer]=useState(false);
 
   function toggleSideBtn() {

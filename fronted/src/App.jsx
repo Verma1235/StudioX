@@ -48,7 +48,7 @@ function App() {
       {status?.role == assignRole[3] && <COADMIN />}
       {status?.role == assignRole[4] && <DEVELOPER />}
       {status?.role == assignRole[5] && <EMPLOYEE />}
-      {status?.role == assignRole[6] && <GENERAlPAGE />}
+      {status?.role == assignRole[6] && <GENERAlPAGE setrole={setrole} />}
       {status?.role == assignRole[7] && <ProcessingScreen />}
     </>
   );

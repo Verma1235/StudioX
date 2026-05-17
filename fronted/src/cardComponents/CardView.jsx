@@ -1,96 +1,207 @@
 import { Icons } from "../../svg/Icons";
 
 const CardView = ({ DATA, total, blocked, handlePopUpToggle }) => {
-  // console.log(Total)
   const active = Number(total) - Number(blocked);
-const percentage =
-  Number(total) > 0
-    ? (((Number(total) - Number(blocked || 0)) * 100) / Number(total)).toFixed(1)
-    : "0.0";
-  // Number( (Number(active)*100)/Number(total)).toFixed(1) >= 100
-  //   ? 100
-  //   : ;
+
+  const percentage =
+    Number(total) > 0
+      ? (
+          ((Number(total) - Number(blocked || 0)) * 100) /
+          Number(total)
+        ).toFixed(1)
+      : "0.0";
+
   const color = DATA?.iconClr || "#00d5ff";
-  // alert(percentage)
+
   return (
     <>
       <div
-        className={`w-[270px] h-[160px] sm:w-[200px] sm:h-[120px] bg-gradient-to-r from-[#bcf27e51] to-[#85e8b27f]  rounded-2xl flex overflow-hidden px-2 shadow-lg border border-[${DATA.iconClr}]/60 transition-transform duration-300 hover:scale-108 hover:z-50 hover:bg-amber-200 lg:scale-90 xl:scale-100`}
+        className={`
+          group
+          relative
+          w-full
+          min-h-[190px]
+          rounded-3xl
+          overflow-hidden
+          border
+          border-white/10
+          bg-gradient-to-br
+          from-white/[0.08]
+          to-white/[0.03]
+          backdrop-blur-2xl
+          shadow-[0_10px_40px_rgba(0,0,0,0.35)]
+          p-5
+          transition-all
+          duration-500
+          hover:-translate-y-1
+          hover:border-white/20
+        `}
       >
-        {/* Left Side: Icon and Stats */}
-        <div className="w-3/5 h-full p-3 flex flex-col justify-between">
-          <div
-            className={`w-10 h-10 rounded-lg flex items-center justify-center`}
-          style={{background:DATA?.iconBg ||"#00d5ff"}}
-          >
-            <Icons icon={DATA?.icon} color={DATA?.iconClr || "#00d5ff"} />
-          </div>
-          <div>
-            <h2 className="font-bold text-2xl text-slate-900 leading-none">
-              {total >= 1000 ? total : total}
-            </h2>
-            <div className="text-sm text-amber-900 font-mono mt-1">
-              {DATA.name}
-            </div>
-          </div>
+        {/* GLOW */}
+        <div
+          className="
+            absolute
+            top-0
+            right-0
+            w-[120px]
+            h-[120px]
+            rounded-full
+            blur-3xl
+            opacity-20
+            pointer-events-none"
+          style={{
+            background: color,
+          }}
+        >
+          {" "}
         </div>
 
-        {/* Right Side: Options and Progress */}
-        <div className="w-2/5 h-full flex flex-col">
-          {/* Dots Icon Container */}
-          <div className="w-full h-[30%] flex justify-end items-center pr-1 " data-cardid={DATA?.cardid}>
+        {/* TOP */}
+        <div className="flex items-start justify-between">
+          {/* ICON */}
+          <div
+            className="
+              w-14
+              h-14
+              rounded-2xl
+              flex
+              items-center
+              justify-center
+              border
+              border-white/10
+              backdrop-blur-xl
+            "
+            style={{
+              background: DATA?.iconBg || color,
+            }}
+          >
+            <Icons
+              icon={DATA?.icon}
+              color={DATA?.iconClr || "#fff"}
+              scale={1.2}
+            />
+          </div>
+
+          {/* MENU */}
+          <button
+            onClick={handlePopUpToggle}
+            data-cardid={DATA?.cardid}
+            className="
+              w-10
+              h-10
+              rounded-xl
+              flex
+              items-center
+              justify-center
+              bg-white/[0.04]
+              hover:bg-white/[0.08]
+              transition-all
+              duration-300
+            "
+          >
             <svg
-              onClick={handlePopUpToggle}
               xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#000000"
+              stroke="white"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="cursor-pointer opacity-70 hover:opacity-100"
+              className="opacity-70"
             >
               <circle cx="12" cy="12" r="1"></circle>
               <circle cx="12" cy="5" r="1"></circle>
               <circle cx="12" cy="19" r="1"></circle>
             </svg>
+          </button>
+        </div>
+
+        {/* CENTER */}
+        <div className="mt-6">
+          <h2
+            className="
+              text-4xl
+              font-bold
+              text-white
+              leading-none
+            "
+          >
+            {total}
+          </h2>
+
+          <p
+            className="
+              text-white/50
+              mt-2
+              text-sm
+              tracking-wide
+            "
+          >
+            {DATA.name}
+          </p>
+        </div>
+
+        {/* BOTTOM */}
+        <div className="mt-6 flex items-center justify-between">
+          {/* ACTIVE */}
+          <div>
+            <div
+              className="
+                text-white
+                font-semibold
+                text-sm
+              "
+            >
+              {active} Active
+            </div>
+
+            <div
+              className="
+                text-white/35
+                text-xs
+                mt-1
+              "
+            >
+              Performance Status
+            </div>
           </div>
 
-          {/* Progress Ring Container */}
-          <div className="w-full h-[50%] flex items-center justify-center relative  ">
-            {/* Percentage Text: Centered perfectly regardless of size */}
-            <span className="absolute z-10 text-[12px] font-bold text-slate-800">
+          {/* PROGRESS RING */}
+          <div className="relative">
+            <span
+              className="
+                absolute
+                inset-0
+                flex
+                items-center
+                justify-center
+                text-[11px]
+                font-bold
+                text-white
+              "
+            >
               {percentage}%
             </span>
 
-            {/* The Animated Ring */}
             <div
-              className="w-[60px] h-[60px] rounded-full"
+              className="
+                w-[70px]
+                h-[70px]
+                rounded-full
+              "
               style={{
-                background: `conic-gradient(${color} ${percentage}%, #e2e8f0 0)`,
+                background: `conic-gradient(${color} ${percentage}%, rgba(255,255,255,0.08) 0)`,
+
                 WebkitMask:
-                  "radial-gradient(farthest-side, transparent 75%, white 0)",
-                mask: "radial-gradient(farthest-side, transparent 75%, white 0)",
-                filter: `drop-shadow(0 0 5px ${color}80)`,
-                transition: `all 0.5s ease-in-out`,
+                  "radial-gradient(farthest-side, transparent 74%, white 0)",
+
+                mask: "radial-gradient(farthest-side, transparent 74%, white 0)",
+
+                filter: `drop-shadow(0 0 10px ${color}80)`,
               }}
             />
-          </div>
-          <div className="w-full h-[20%] text-center ">
-            <div className="flex items-center justify-center  gap-y-0 h-full w-full">
-              <div
-                className={`font-bold text-[10px] p-2 text-[${DATA.iconClr}] leading-none`}
-              >
-                {active}/{total >= 1000 ? total : total}
-              </div>
-              <div
-                className={`text-[10px] text-[${DATA.iconBg}] font-mono mt-1`}
-              >
-                Active
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ function Logout(setrole) {
 
   Toast("Logout successfully !! ");
 
-  setrole(0);
+  setrole(6);
 }
 
 export { Logout };

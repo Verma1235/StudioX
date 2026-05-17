@@ -27,7 +27,7 @@ const svgIconsName = {
 const defaultMenuItems = [
   {
     optionid: 1,
-    name: "Logi/Signup",
+    name: "Login/Signup",
     event: "onClick",
     action: "login",
     iconname: svgIconsName["users"],
@@ -75,11 +75,24 @@ export const useMenuItems = () => {
       }
       setrole(0);
     },
-    dashboard: () => alert("Dashboard"),
+    dashboard: (setrole) => {
+      let res = confirm("Are you sure? Go to Dashboard window !!");
+      if (!res) {
+        return;
+      }
+      setrole(1);
+    },
     settings: () => alert("Settings"),
     logout: (setrole) => Logout(setrole),
     about: () => alert("About"),
     myprofile: () => alert("My profile"),
+    home: (setrole) => {
+      let res = confirm("Are you sure? Go to Home window !!");
+      if (!res) {
+        return;
+      }
+      setrole(6);
+    },
   };
 
   return { menuItems, handlers };

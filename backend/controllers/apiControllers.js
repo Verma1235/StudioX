@@ -95,7 +95,7 @@ const fetchUsers = (req, res) => {
 const cardData = (req, res) => {
     try {
         const { id, email, role } = req.user;
-        if (role != "ADMIN" && role != "DEVELOPER" && role != "COADMIN") return res.status(401).send({ success: false, message: "you haven't permission to access card data", role: role });
+        if (role != "ADMIN" && role != "DEVELOPER" && role != "COADMIN") return res.status(401).send({ success: false, message: "you haven't permission to access Dashboard Analytics data", role: role });
         const sql = `
 SELECT 
     COUNT(*) AS CLIENTS,
@@ -265,6 +265,40 @@ const fetchAllOptions = (req, res) => {
     }
 }
 
+const generalSettings = (req, res) => {
+    try {
+        const { id, email, role } = req.user;
+
+       const sql = "SELECT * FROM `settings` where settings_id=?";
+        db.query(sql,[1], (err, result) => {
+
+            if (err) {
+                return res.status(500).send({
+                    success: false,
+                    message: "Error occours in doing query to fetch settings ",
+                    error: err,
+                });
+
+            }
+
+            res.status(200).send({
+                success: true,
+                message: "settings fetched successfully from database ",
+                data: result,
+            })
+
+        })
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Server error in fetching StudioX settings",
+            error
+        })
+    }
+}
 
 
 
@@ -273,5 +307,4 @@ const fetchAllOptions = (req, res) => {
 
 
 
-
-export { fetchUsers, cardData, tokenValidator, assignOptions, fetchAllOptions };
+export { fetchUsers, cardData, tokenValidator, assignOptions, fetchAllOptions ,generalSettings};
