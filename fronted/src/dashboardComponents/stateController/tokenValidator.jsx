@@ -32,19 +32,22 @@ async function tokenValidator() {
   }
 }
 
-async function checktoken(setrole) {
-    setrole(7);
+async function checktoken(setrole, toggleProcessingWindow) {
+  // toggleProcessingWindow();
+  setrole(7);
   const valid = await tokenValidator();
 
   // console.log("VALID:", valid);
 
   if (valid) {
     setrole(1);
+  
   } else {
     setrole(6);
     if (valid == 2) {
       setrole(7);
     }
+  
   }
 }
 

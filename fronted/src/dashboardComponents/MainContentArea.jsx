@@ -1,7 +1,7 @@
 import CardArea from "../dashboardComponents/CardArea";
 import MyGallery from "../dashboardComponents/MyGallery";
 import LiveNotification from "./Notification/LiveActivity";
-
+import Footer from "../dashboardComponents/Footer";
 const MainContentArea = () => {
   return (
     <>
@@ -36,7 +36,6 @@ const MainContentArea = () => {
           scrollbar-track-transparent
         "
       >
-
         {/* BACKGROUND GLOW */}
         <div
           className="
@@ -71,7 +70,6 @@ const MainContentArea = () => {
             gap-5
           "
         >
-
           {/* TOP GRID */}
           <section
             className="
@@ -85,7 +83,6 @@ const MainContentArea = () => {
               items-start
             "
           >
-
             {/* LEFT SIDE */}
             <div
               className="
@@ -125,7 +122,6 @@ const MainContentArea = () => {
             >
               <LiveNotification />
             </div>
-
           </section>
 
           {/* GALLERY SECTION */}
@@ -147,10 +143,10 @@ const MainContentArea = () => {
           >
             <MyGallery />
           </section>
-
         </div>
-
+           <Footer />
       </main>
+   
     </>
   );
 };

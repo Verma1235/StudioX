@@ -75,15 +75,20 @@ const isUserRegistered = async (
 
 
 const isDBconnected = async () => {
-  await db.ping((err) => {
-    if (err) {
-      return false;
-    } else {
-      return true;
-    }
-  })
-}
+  try {
+    const connection = await db.promise().getConnection();
 
+    await connection.ping();
+
+    connection.release();
+
+    return true;
+  } catch (err) {
+    console.error("DB connection error:", err);
+
+    return false;
+  }
+};
 
 
 // Check if body exists

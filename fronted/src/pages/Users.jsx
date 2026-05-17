@@ -1,9 +1,11 @@
 import BodyTemplates from "../generalComponents/BodyTemplates";
+import { useState } from "react";
+const User = ({ setrole,toggleFloatContainer }) => {
 
-const User = ({setrole}) => {
   return (
     <>
-      <BodyTemplates setrole={setrole} />
+  
+      <BodyTemplates setrole={setrole} toggleFloatContainer={toggleFloatContainer} />
     </>
   );
 };

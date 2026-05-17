@@ -6,6 +6,8 @@ const SideOptionsBtn = ({
   menuItems,
   setrole,
   handlers,
+  toggleSideBtn,
+  toggleFloatContainer
 }) => {
   return (
     <>
@@ -44,7 +46,7 @@ const SideOptionsBtn = ({
         "
         {...{
           [menuItems?.event]: () =>
-            handlers[menuItems?.action](setrole),
+            handlers[menuItems?.action](toggleSideBtn, setrole,toggleFloatContainer),
         }}
       >
 

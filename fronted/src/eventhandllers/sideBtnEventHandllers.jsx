@@ -68,30 +68,30 @@ export const useMenuItems = () => {
   }, []);
 
   const handlers = {
-    login: (setrole) => {
-      let res = confirm("Are you sure? Go to login window !!");
-      if (!res) {
-        return;
-      }
+    login: (toggleSideBtn, setrole,toggleFloatContainer) => {
       setrole(0);
+      toggleSideBtn();
     },
-    dashboard: (setrole) => {
-      let res = confirm("Are you sure? Go to Dashboard window !!");
-      if (!res) {
-        return;
-      }
+    dashboard: (toggleSideBtn, setrole,toggleFloatContainer) => {
       setrole(1);
+      toggleSideBtn();
     },
-    settings: () => alert("Settings"),
-    logout: (setrole) => Logout(setrole),
-    about: () => alert("About"),
-    myprofile: () => alert("My profile"),
-    home: (setrole) => {
-      let res = confirm("Are you sure? Go to Home window !!");
-      if (!res) {
-        return;
-      }
+    settings: (toggleSideBtn, setrole,toggleFloatContainer) =>{
+      toggleFloatContainer("Settings")
+    },
+    logout: (toggleSideBtn, setrole,toggleFloatContainer) => {
+      Logout(setrole);
+      toggleSideBtn();
+    },
+    about: (toggleSideBtn, setrole,toggleFloatContainer) => {
+      toggleFloatContainer("About us")
+    },
+    myprofile: (toggleSideBtn, setrole,toggleFloatContainer) =>{
+      toggleFloatContainer("My Profile")
+    },
+    home: (toggleSideBtn, setrole,toggleFloatContainer) => {
       setrole(6);
+      toggleSideBtn();
     },
   };
 

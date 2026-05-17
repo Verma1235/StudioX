@@ -4,7 +4,7 @@ import { Icons } from "../../svg/Icons";
 import SideOptionsBtn from "./SideOptionsBtn";
 import { useMenuItems } from "../eventhandllers/sideBtnEventHandllers";
 
-const Sidemenu = ({ sidemenuflag, setrole }) => {
+const Sidemenu = ({ sidemenuflag, setrole,toggleSideBtn,toggleFloatContainer}) => {
   const { menuItems, handlers } = useMenuItems();
 
   return (
@@ -98,7 +98,7 @@ const Sidemenu = ({ sidemenuflag, setrole }) => {
                 shadow-[0_10px_30px_rgba(192,108,191,0.35)]
               "
             >
-              <Icons icon="camera" color="white" scale={1.2} />
+              <Icons icon="AI" color="white" scale={1.2} />
             </div>
 
             <div>
@@ -147,6 +147,8 @@ const Sidemenu = ({ sidemenuflag, setrole }) => {
                 menuItems={val}
                 setrole={setrole}
                 handlers={handlers}
+                toggleSideBtn={toggleSideBtn}
+                toggleFloatContainer={toggleFloatContainer}
               />
             );
           })}
