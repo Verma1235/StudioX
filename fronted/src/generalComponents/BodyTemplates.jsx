@@ -16,6 +16,8 @@ const BodyTemplates = ({ setrole,toggleFloatContainer }) => {
 
   return (
     <>
+    
+    
       <div className="fixed left-0 top-0 h-screen w-screen  bg-gradient-to-r from-[#ff9169bf] to-[#e04ef3bb]  flex justify-center items-start md:items-center">
         <div className="h-[100vh] w-[100%] bg-[#ffffff22] rounded-xl shadow-lg shadow-red-400/50 overflow-hidden ">
           <Headers toggleSideBtn={toggleSideBtn} toggleFloatContainer={toggleFloatContainer} />

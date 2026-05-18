@@ -76,7 +76,7 @@ export const useMenuItems = () => {
       setrole(1);
       toggleSideBtn();
     },
-    settings: (toggleSideBtn, setrole,toggleFloatContainer) =>{
+    setting: (toggleSideBtn, setrole,toggleFloatContainer) =>{
       toggleFloatContainer("Settings")
     },
     logout: (toggleSideBtn, setrole,toggleFloatContainer) => {

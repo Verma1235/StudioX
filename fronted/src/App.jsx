@@ -14,6 +14,7 @@ import {
   tokenValidator,
   checktoken,
 } from "../src/dashboardComponents/stateController/tokenValidator";
+import SettingsControl from "./FloatContainerComponents/SettingsControl";
 const assignRole = [
   "LOGIN_SIGNUP",
   "USER",
@@ -114,7 +115,7 @@ function App() {
           FloatContainerState={FloatContainerState}
           toggleFloatContainer={toggleFloatContainer}
         >
-          <div className="text-white">hii welcome</div>
+        {FloatContainerState.target=="Settings" && <SettingsControl/> } 
         </FloatContainer>
       )}
     </>

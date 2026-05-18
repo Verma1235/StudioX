@@ -154,9 +154,9 @@ const FloatContainer = ({ children ,FloatContainerState,toggleFloatContainer}) =
               z-10
               flex-1
               overflow-y-auto
-              p-4
-              md:p-6
-              xl:p-8
+              px-1
+              md:p-4
+              xl:p-6
               scrollbar-thin
               scrollbar-thumb-white/10
               scrollbar-track-transparent

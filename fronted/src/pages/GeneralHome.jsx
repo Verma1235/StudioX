@@ -105,7 +105,7 @@ const GeneralHome = ({ setrole,toggleFloatContainer }) => {
             justify-between
             px-6
             md:px-16
-            py-24
+            py-12
             gap-16
           "
         >

@@ -269,8 +269,8 @@ const generalSettings = (req, res) => {
     try {
         const { id, email, role } = req.user;
 
-       const sql = "SELECT * FROM `settings` where settings_id=?";
-        db.query(sql,[1], (err, result) => {
+        const sql = "SELECT * FROM `settings` where settings_id=?";
+        db.query(sql, [1], (err, result) => {
 
             if (err) {
                 return res.status(500).send({
@@ -301,10 +301,67 @@ const generalSettings = (req, res) => {
 }
 
 
+const updateSettings = async (req, res) => {
+    try {
+        const { id, email, role } = req.user;
+        const {
+            settings_id,
+            login,
+            logout,
+            signup,
+            user_login,
+            employee_login,
+            admin_login,
+            coadmin_login,
+            developer_login,
+            warning_msg,
+            sms_allow,
+            notificaton_allow,
+            socketio_connection
+        } = req.body;
+
+        if (role !== 'ADMIN' && role !== 'COADMIN' && role !== 'DEVELOPER') {
+            return res.status(401).send({
+                success: false, // Changed from true to false
+                message: "Unauthorized to process this task !!",
+            });
+        }
+
+        const sql = "UPDATE `settings` SET `login`=?,`logout`=?,`signup`=?,`user_login`=?,`employee_login`=?,`admin_login`=?,`coadmin_login`=?,`developer_login`=?,`warning_msg`=?,`sms_allow`=?,`notificaton_allow`=?,`socketio_connection`=? WHERE `settings_id`=? ";
+        db.query(sql, [login, logout, signup, user_login, employee_login, admin_login, coadmin_login, developer_login, warning_msg, sms_allow, notificaton_allow, socketio_connection, settings_id], (err, result) => {
+
+            if (err) {
+                console.log('Erroro1:');
+                console.log(err);
+                return res.status(500).send({
+                    success: false,
+                    message: "DB Error while updating settings !!",
+                    error: err,
+                })
+            }
+
+            res.status(200).send({
+                success: true,
+                message: "Successfully settings changed !!",
+            })
+
+
+
+        })
+
+    } catch (error) {
+        console.log('Erroro2:');
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Server error in Saving StudioX settings",
+            error
+        })
+    }
+}
 
 
 
 
 
-
-export { fetchUsers, cardData, tokenValidator, assignOptions, fetchAllOptions ,generalSettings};
+export { fetchUsers, cardData, tokenValidator, assignOptions, fetchAllOptions, generalSettings, updateSettings };
