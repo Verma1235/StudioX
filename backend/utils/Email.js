@@ -46,7 +46,7 @@ async function sendMail({ email = 'testemail@gmail.com', text = 'Your verificati
       const previewUrl = nodemailer.getTestMessageUrl(info);
 
     console.log("\nPreview URL:");
-    console.log(previewUrl);
+    console.log("URL:",previewUrl);
 }
 
 
