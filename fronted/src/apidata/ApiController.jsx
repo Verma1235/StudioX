@@ -7,7 +7,7 @@ class ApiController {
   }
 
   getToken() {
-    return localStorage.getItem("token");
+    return localStorage.getItem("token") || "Bearer ";
   }
 
   getHeaders() {

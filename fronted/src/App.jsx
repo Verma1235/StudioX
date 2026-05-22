@@ -15,6 +15,8 @@ import {
   checktoken,
 } from "../src/dashboardComponents/stateController/tokenValidator";
 import SettingsControl from "./FloatContainerComponents/SettingsControl";
+import ResetPassword from "./FloatContainerComponents/ForgotPassword";
+
 const assignRole = [
   "LOGIN_SIGNUP",
   "USER",
@@ -58,7 +60,7 @@ function App() {
     <>
       <ToastContainer />
       {processingWindow && (
-        <div className="fixed inset-0 bg-[#050505]/50 flex items-center justify-center overflow-hidden z-50">
+        <div className="fixed inset-0 bg-[#050505]/50 flex items-center justify-center overflow-hidden z-[5001]">
           <div className="relative flex items-center gap-2">
             {[...Array(5)].map((_, i) => (
               <span
@@ -93,6 +95,7 @@ function App() {
         <LOGIN_SIGNUP_PAGE
           setrole={setrole}
           toggleFloatContainer={toggleFloatContainer}
+          toggleProcessingWindow={toggleProcessingWindow}
         />
       )}
       {status?.role == assignRole[1] && (
@@ -116,6 +119,7 @@ function App() {
           toggleFloatContainer={toggleFloatContainer}
         >
         {FloatContainerState.target=="Settings" && <SettingsControl/> } 
+        {FloatContainerState.target == "forgot" && <ResetPassword toggleProcessingWindow={toggleProcessingWindow} />}
         </FloatContainer>
       )}
     </>

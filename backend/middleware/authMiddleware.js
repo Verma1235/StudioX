@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-
+import { isEmpty,validatePassword } from "../middleware/validationhelper.js";
 const authMiddleware = async (req, res, next) => {
 
     try {
@@ -22,7 +22,7 @@ const authMiddleware = async (req, res, next) => {
         req.user = {
             id: decoded.id,
             email: decoded.email,
-            role:decoded?.role || "USER",
+            role: decoded?.role || "USER",
         };
         next();
 
@@ -36,6 +36,25 @@ const authMiddleware = async (req, res, next) => {
     }
 
 
+}
+
+export const passwordValidator = (req, res, next) => {
+    try {
+        const { newPass } = req.body;
+
+        if (isEmpty(newPass)) {
+            return res.status(401).send({ success: false, message: "Please set New password" });
+        }
+
+        if(!validatePassword(newPass)){
+            return res.send({success:false,message:"Password must be at least 6-digits"})
+        }
+
+        next();
+
+    } catch (error) {
+
+    }
 }
 
 

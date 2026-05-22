@@ -7,7 +7,7 @@ import { FaFacebook, FaInstagram, FaGithub } from "react-icons/fa";
 import { Toast } from "../dashboardComponents/ToastContainer";
 import FormController from "../dashboardComponents/FormHandeller/FormHandeller";
 import {dev_pic} from "../img/img"
-const Login_signup = ({setrole}) => {
+const Login_signup = ({setrole,toggleFloatContainer,toggleProcessingWindow}) => {
   const [isLogin, setIsLogin] = useState(true);
 
   // Animation Variants
@@ -215,7 +215,7 @@ const Login_signup = ({setrole}) => {
                     />
                     <input
                       type="password"
-                      placeholder="Password"
+                      placeholder="Confirm Password"
                       className="w-full bg-white/10 border border-white/20 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/30 focus:bg-white/20 transition-all"
                       name="CONFPASS"
                       onChange={form2.handleChange}
@@ -258,6 +258,10 @@ const Login_signup = ({setrole}) => {
                     <a
                       href="#"
                       className="hover:text-white hover:underline underline-offset-4"
+                      onClick={()=>{
+                        toggleFloatContainer("forgot")
+                      
+                      }}
                     >
                       Forgot?
                     </a>

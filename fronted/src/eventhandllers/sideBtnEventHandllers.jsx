@@ -43,6 +43,17 @@ const defaultMenuItems = [
     iconclr: "blue",
     scale: 0.8,
   },
+  {
+    action: "home",
+    event: "onClick",
+    iconclr: "orange",
+    iconname: "home",
+    name: "Home",
+    optionid: 3,
+    role: "user",
+    scale: 0.8,
+    show: 2,
+  },
 ];
 
 const api = new ApiController();
@@ -68,28 +79,28 @@ export const useMenuItems = () => {
   }, []);
 
   const handlers = {
-    login: (toggleSideBtn, setrole,toggleFloatContainer) => {
+    login: (toggleSideBtn, setrole, toggleFloatContainer) => {
       setrole(0);
       toggleSideBtn();
     },
-    dashboard: (toggleSideBtn, setrole,toggleFloatContainer) => {
+    dashboard: (toggleSideBtn, setrole, toggleFloatContainer) => {
       setrole(1);
       toggleSideBtn();
     },
-    setting: (toggleSideBtn, setrole,toggleFloatContainer) =>{
-      toggleFloatContainer("Settings")
+    setting: (toggleSideBtn, setrole, toggleFloatContainer) => {
+      toggleFloatContainer("Settings");
     },
-    logout: (toggleSideBtn, setrole,toggleFloatContainer) => {
+    logout: (toggleSideBtn, setrole, toggleFloatContainer) => {
       Logout(setrole);
       toggleSideBtn();
     },
-    about: (toggleSideBtn, setrole,toggleFloatContainer) => {
-      toggleFloatContainer("About us")
+    about: (toggleSideBtn, setrole, toggleFloatContainer) => {
+      toggleFloatContainer("About us");
     },
-    myprofile: (toggleSideBtn, setrole,toggleFloatContainer) =>{
-      toggleFloatContainer("My Profile")
+    myprofile: (toggleSideBtn, setrole, toggleFloatContainer) => {
+      toggleFloatContainer("My Profile");
     },
-    home: (toggleSideBtn, setrole,toggleFloatContainer) => {
+    home: (toggleSideBtn, setrole, toggleFloatContainer) => {
       setrole(6);
       toggleSideBtn();
     },

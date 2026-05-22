@@ -160,6 +160,8 @@ const FloatContainer = ({ children ,FloatContainerState,toggleFloatContainer}) =
               scrollbar-thin
               scrollbar-thumb-white/10
               scrollbar-track-transparent
+          flex  justify-center items-center
+
             "
           >
             {children || (
