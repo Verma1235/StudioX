@@ -110,10 +110,10 @@ const TechQvAi = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
             className="
-              fixed bottom-5 right-5 z-50
+              fixed bottom-5 right-[12px] z-50
               w-[95%] sm:w-[420px]
               h-[85vh]
-              rounded-[35px]
+              rounded-[5px]
               overflow-hidden
               border border-white/10
               bg-white/[0.08]
@@ -190,11 +190,11 @@ const TechQvAi = () => {
 
             {/* INPUT */}
 
-            <div className="p-4 border-t border-white/10 bg-black/10">
-              <div className="flex gap-3 bg-white/10 rounded-[25px] p-3 border border-white/10">
+            <div className="p-2 border-t border-white/10 bg-black/10">
+              <div className="flex gap-3 bg-white/10 rounded-[25px] p-3 border border-white/10 max-h-[50px] items-center">
                 <textarea
                   disabled={inputDisabled}
-                  rows={1}
+                  rows={0}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => {
@@ -204,13 +204,13 @@ const TechQvAi = () => {
                     }
                   }}
                   placeholder="Ask anything..."
-                  className="flex-1 bg-transparent resize-none outline-none text-white placeholder:text-white/40"
+                  className="flex-1 flex pt-5  items-center bg-transparent resize-none outline-none text-white placeholder:text-white/40"
                 />
 
                 <button
                   disabled={inputDisabled}
                   onClick={sendMessage}
-                  className="w-12 h-12 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white flex items-center justify-center"
+                  className="w-12 h-8 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white flex items-center justify-center"
                 >
                   <FaPaperPlane />
                 </button>
