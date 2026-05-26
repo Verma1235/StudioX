@@ -24,6 +24,13 @@ class FormController {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+  setValues({ email = "", password = "" }) {
+    this.setState((prev) => ({
+      ...prev,
+      email,
+      password,
+    }));
+  }
 
   sendOTP = async () => {
     try {

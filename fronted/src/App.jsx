@@ -16,7 +16,8 @@ import {
 } from "../src/dashboardComponents/stateController/tokenValidator";
 import SettingsControl from "./FloatContainerComponents/SettingsControl";
 import ResetPassword from "./FloatContainerComponents/ForgotPassword";
-
+import StudioxAiAgent from "./AI/StudioxAiAgent2";
+import("./socket/AggentFunctionControllers");
 const assignRole = [
   "LOGIN_SIGNUP",
   "USER",
@@ -118,10 +119,14 @@ function App() {
           FloatContainerState={FloatContainerState}
           toggleFloatContainer={toggleFloatContainer}
         >
-        {FloatContainerState.target=="Settings" && <SettingsControl/> } 
-        {FloatContainerState.target == "forgot" && <ResetPassword toggleProcessingWindow={toggleProcessingWindow} />}
+          {FloatContainerState.target == "Settings" && <SettingsControl />}
+          {FloatContainerState.target == "forgot" && (
+            <ResetPassword toggleProcessingWindow={toggleProcessingWindow} />
+          )}
         </FloatContainer>
       )}
+      {/* <SocketApp /> */}
+      <StudioxAiAgent />
     </>
   );
 }
