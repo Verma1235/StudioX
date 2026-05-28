@@ -152,11 +152,12 @@ class StudioXAIAgent {
         // ==========================================
         // CASE: PLAN
         // ==========================================
-        if (agentStep.type === "plan") {+
-          tempMessages.push({
-            role: "model",
-            parts: [{ text: JSON.stringify(agentStep) }],
-          });
+        if (agentStep.type === "plan") {
+          +
+            tempMessages.push({
+              role: "model",
+              parts: [{ text: JSON.stringify(agentStep) }],
+            });
           continue;
         }
 
@@ -178,9 +179,10 @@ class StudioXAIAgent {
 
           let observationResult;
           try {
-            observationResult = await fn(
-              extrnalparseInput(agentStep.input) || {}
-            );
+            let inputParm = extrnalparseInput(agentStep.input) || {};
+            inputParm.socket = this.socket;
+            observationResult = await fn(inputParm);
+            console.log("Observation output", observationResult);
           } catch (toolError) {
             console.error("Tool Execution Failed:", toolError.message);
             observationResult = "Tool execution failed";
@@ -188,7 +190,7 @@ class StudioXAIAgent {
 
           const observationPayload = {
             type: "observation",
-            observation: observationResult,
+            observation: observationResult ?? null,
           };
 
           console.log(

@@ -17,7 +17,7 @@ import {
 import SettingsControl from "./FloatContainerComponents/SettingsControl";
 import ResetPassword from "./FloatContainerComponents/ForgotPassword";
 import StudioxAiAgent from "./AI/StudioxAiAgent2";
-import("./socket/AggentFunctionControllers");
+import AggentFunctionControllers from "./socket/AggentFunctionControllers";
 const assignRole = [
   "LOGIN_SIGNUP",
   "USER",
@@ -53,13 +53,14 @@ function App() {
   }
   //  update status
   useEffect(() => {
+    
     setrole(7);
     checktoken(setrole, toggleProcessingWindow);
   }, []);
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer setrole={setrole} />
       {processingWindow && (
         <div className="fixed inset-0 bg-[#050505]/50 flex items-center justify-center overflow-hidden z-[5001]">
           <div className="relative flex items-center gap-2">
@@ -127,6 +128,7 @@ function App() {
       )}
       {/* <SocketApp /> */}
       <StudioxAiAgent />
+      <AggentFunctionControllers/>
     </>
   );
 }

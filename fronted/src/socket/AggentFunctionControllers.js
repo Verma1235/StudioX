@@ -1,35 +1,33 @@
-import FormController from "../dashboardComponents/FormHandeller/FormHandeller";
+import { useMemo, useEffect, useState } from "react";
 import socket from "./socket";
 import { isEmpty } from "../helpers/validetors";
+import { Toast } from "../dashboardComponents/ToastContainer";
 const AggentFunctionControllers = () => {
 
-    let logininitialState = {
-        email: "",
-        password: "",
-        rememberme: false,
-    };
-    const [logindata, setlogindata] = useState(logininitialState);
+    useEffect(() => {
+        const logiResHandler = (data, callback) => {
+            if (!data?.token) {
+                Toast(data?.message || "Login faild !! Retry Login manually by entring credientials.", "i", 3000, 6);
+                callback(false);
+            }
 
-    const form1 = new FormController(logindata, setlogindata, logininitialState);
+            if (data?.token) {
+                localStorage.setItem('token', data?.token);
+                Toast(data?.message || "Login successfully ", 's', 4000, 1)
+                callback(true);
+            }
 
-    socket.on("login", async (data, callback) => {
-        if (!data) {
-            return false;
-        }
-        if (isEmpty(data?.email)) {
-            return false;
-        }
-        if (isEmpty(data?.password)) {
-            return false;
         }
 
-        form1.setValues({ email: data?.email, password: data?.password });
+        socket.on("login", logiResHandler);
 
-        const res = await form1.handleSubmit(`%${import.meta.env.VITE_BACKEND_DATA_URL}/login`)
+        return () => {
+            socket.off("login", loginHandler);
+        };
 
+    }, []);
 
-    })
+    return null;
+};
 
-    return;
-}
-
+export default AggentFunctionControllers;

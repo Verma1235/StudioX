@@ -6,6 +6,7 @@ import { validateEmail, isEmpty, isMatch, validatePassword, isUserRegistered, is
 
 const loginMiddleware = (req, res, next) => {
     console.log("incoming request");
+    console.log(req?.body);
     if (isBodyEmpty(req)) {
         return res.status(400).json({
             success: false,

@@ -1,40 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // The Global Function
-export const Toast = (message, type = 'i', duration = 3000) => {
-  const event = new CustomEvent('show-toast', { 
-    detail: { message, type, duration } 
+export const Toast = (message, type = "i", duration = 3000, role) => {
+  const event = new CustomEvent("show-toast", {
+    detail: { message, type, duration, role },
   });
   window.dispatchEvent(event);
 };
 
-const ToastContainer = () => {
+const ToastContainer = ({ setrole }) => {
   const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
     const handleToast = (e) => {
       const id = Date.now();
-      const { message, type, duration } = e.detail;
-      
+      const { message, type, duration, role } = e.detail;
+
       setToasts((prev) => [...prev, { id, message, type }]);
+      if (!!role) {
+        setrole(role);
+      }
 
       setTimeout(() => {
         setToasts((prev) => prev.filter((t) => t.id !== id));
       }, duration);
     };
 
-    window.addEventListener('show-toast', handleToast);
-    return () => window.removeEventListener('show-toast', handleToast);
+    window.addEventListener("show-toast", handleToast);
+    return () => window.removeEventListener("show-toast", handleToast);
   }, []);
 
   const getStyles = (type) => {
     switch (type) {
-      case 'd': return 'bg-red-500/50 border-red-600';    // Danger
-      case 'w': return 'bg-orange-500/60 border-orange-600'; // Warning
-      case 's': return 'bg-green-500/60 border-green-600';  // Success
-      case 'i': return 'bg-blue-500/60 border-blue-600';    // Info
-      default: return 'bg-gray-800/60 border-gray-900';
+      case "d":
+        return "bg-red-500/50 border-red-600"; // Danger
+      case "w":
+        return "bg-orange-500/60 border-orange-600"; // Warning
+      case "s":
+        return "bg-green-500/60 border-green-600"; // Success
+      case "i":
+        return "bg-blue-500/60 border-blue-600"; // Info
+      default:
+        return "bg-gray-800/60 border-gray-900";
     }
   };
 

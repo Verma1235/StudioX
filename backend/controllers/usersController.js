@@ -57,6 +57,7 @@ const loginController = async (req, res) => {
                     {
                         success: true,
                         token,
+                        action: 1,
                     }
                 );
             }

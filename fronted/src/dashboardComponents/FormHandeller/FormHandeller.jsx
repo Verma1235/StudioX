@@ -13,7 +13,7 @@ class FormController {
     this.values = state;
     this.setState = setState;
     this.initialState = initialState; // Store it to use for resetting
-
+    // this.setState(initialState);
     this.api = new ApiController(baseURL);
   }
 
@@ -24,14 +24,12 @@ class FormController {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
-  setValues({ email = "", password = "" }) {
+  setValues(values) {
     this.setState((prev) => ({
       ...prev,
-      email,
-      password,
+      ...values,
     }));
   }
-
   sendOTP = async () => {
     try {
       const res = await this.api.postRequest("/sendotp", {
@@ -145,6 +143,7 @@ class FormController {
         if (setrole) {
           setrole(1);
         }
+        return true;
       }
 
       if (response?.data?.id) {
@@ -153,6 +152,7 @@ class FormController {
           "s",
           5000,
         );
+        return true;
       }
 
       if (response?.data?.success || response?.status === 200) {
