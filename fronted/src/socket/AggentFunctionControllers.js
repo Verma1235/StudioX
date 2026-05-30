@@ -1,28 +1,23 @@
 import { useMemo, useEffect, useState } from "react";
 import socket from "./socket";
 import { isEmpty } from "../helpers/validetors";
-import { Toast } from "../dashboardComponents/ToastContainer";
+import { logiResHandler, logoutResHandeler, settingsHandeller, tokenHandeller } from "./generalSocketControlFunctions";
 const AggentFunctionControllers = () => {
 
     useEffect(() => {
-        const logiResHandler = (data, callback) => {
-            if (!data?.token) {
-                Toast(data?.message || "Login faild !! Retry Login manually by entring credientials.", "i", 3000, 6);
-                callback(false);
-            }
 
-            if (data?.token) {
-                localStorage.setItem('token', data?.token);
-                Toast(data?.message || "Login successfully ", 's', 4000, 1)
-                callback(true);
-            }
 
-        }
 
         socket.on("login", logiResHandler);
+        socket.on("logout", logoutResHandeler);
+        socket.on("settingsUpdates", settingsHandeller);
+        socket.on("getToken", tokenHandeller);
 
         return () => {
             socket.off("login", loginHandler);
+            socket.off("logout", logoutResHandeler);
+            socket.off("settingsUpdates", settingsHandeller);
+            socket.off("getToken", tokenHandeller);
         };
 
     }, []);

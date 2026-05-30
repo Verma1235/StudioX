@@ -51,9 +51,11 @@ function App() {
     });
     console.log(FloatContainerState);
   }
+
   //  update status
   useEffect(() => {
     
+
     setrole(7);
     checktoken(setrole, toggleProcessingWindow);
   }, []);
@@ -128,7 +130,7 @@ function App() {
       )}
       {/* <SocketApp /> */}
       <StudioxAiAgent />
-      <AggentFunctionControllers/>
+      <AggentFunctionControllers />
     </>
   );
 }

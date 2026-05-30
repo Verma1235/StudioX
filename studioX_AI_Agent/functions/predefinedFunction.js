@@ -1,7 +1,7 @@
 import { isEmpty, validateEmail, validatePassword } from "../helper/validetors.js";
 import ApiController from "../API/ApiControllers.js";
 import NewSocketConnection from "../socket/socketconnection.js";
-
+import socketController from "../FrontedSocketHandeller/socketController.js"
 function getWeatherDetails({ city = '' }) {
     const cleanCity = city.trim().toLowerCase();
     if (cleanCity === 'saradhu') return '45°C';
@@ -32,11 +32,11 @@ function dbuserquery({ name = "dinesh" }) {
 }
 
 async function loginintoaccount(data) {
-    console.log("At Login Function: ", data?.socket);
+    // console.log("At Login Function: ", data?.socket);
     const api = new ApiController(data?.socket);
 
-    console.log(data?.email);
-    console.log(data?.password);
+    // console.log(data?.email);
+    // console.log(data?.password);
     if (isEmpty(data?.email) || isEmpty(data?.password)) return "Correct email and password required";
     if (!validateEmail(data?.email)) return "This is not the valid email id";
     if (!validatePassword(data?.password)) return "Password is not correct !! please enter correct more than 6 digits password !!";
@@ -48,7 +48,24 @@ async function loginintoaccount(data) {
     return { backend_status: response?.success, fronted_status: !!response2, message: response?.success ? "Token generated successfully" : response?.message, };
 }
 
-export { getWeatherDetails, toggleLight, dbuserquery, loginintoaccount };
+async function logout(data) {
+    const socketAgent = new socketController(data?.socket);
+    const response = await socketAgent.logout();
+    console.log("LOGOUT RESPONSE ", response);
+    return response;
+}
+
+async function getTokenAndAuthUser(data) {
+    const api = new ApiController(data?.socket);
+    const res = await api.getRequest("/api/token", true);
+
+    console.log("RESPONSE OF TOKEN AUTH: ", res);
+
+    return res.message;
+
+}
+
+export { getWeatherDetails, toggleLight, dbuserquery, loginintoaccount, logout, getTokenAndAuthUser };
 
 
 

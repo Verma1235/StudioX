@@ -8,22 +8,37 @@ class ApiController {
         this.socket = socket || {};
     }
 
-    getHeader() {
+    getToken = async () => {
+        return new Promise((resolve) => {
+            this.socket.emit("getToken", {}, (callback) => {
+                resolve(callback?.token || "");
+            });
+        });
+
+    };
+
+    async getHeader(flag = false) {
+
+        const token = (!!flag ? await this.getToken() : "");
         return {
             Accept: "*/*",
             "Content-Type": "application/json",
-        }
+            Authorization: `Bearer ${token}`,
+
+        };
     }
-    
+
     // =========================================
     // Get Request 
     // =========================================
-    getRequest = async (endpoint) => {
+    // Here flag control to get request to get token from fronted
+    getRequest = async (endpoint, flag = false) => {
         try {
+            const header = await this.getHeader(flag);
             const response = await axios.request({
                 method: "GET",
                 url: `${this.baseURL}${endpoint}`,
-                headers: this.getHeader(),
+                headers: header,
             });
 
             return response.data;
@@ -33,15 +48,18 @@ class ApiController {
             throw error;
         }
     }
+
     // =========================================
     // POST Request
     // =========================================
-    postRequest = async (endpoint, data = {}) => {
+    postRequest = async (endpoint, data = {}, flag = false) => {
         try {
+            const header = await this.getHeader(flag);
+
             const response = await axios.request({
                 method: "POST",
                 url: `${this.baseURL}${endpoint}`,
-                headers: this.getHeader(),
+                headers: header,
                 data,
             })
 
@@ -49,18 +67,19 @@ class ApiController {
 
         } catch (error) {
             console.log(error);
-            throw error;
+            return "Error occours !! Task not completed !!";
         }
     }
     // =========================================
     // put method/ request 
     // =========================================
-    putRequest = async (endpoint, data = {}) => {
+    putRequest = async (endpoint, data = {}, flag = false) => {
         try {
+            const header = await this.getHeader(flag);
             const response = await axios.request({
                 method: "PUT",
                 url: `${this.baseURL}${endpoint}`,
-                headers: this.getHeader(),
+                headers: header,
                 data,
             });
             return error;
@@ -70,16 +89,16 @@ class ApiController {
 
         }
     }
-
     // ============================================
     // DELETE RERQUEST
     // ============================================
     deleteRequest = async (endpoint) => {
         try {
+            const header = await this.getHeader();
             const rersponse = await axios.request({
                 method: "DELETE",
                 url: `${this.baseURL}${endpoint}`,
-                headers: this.getHeader(),
+                headers: header,
             })
 
         } catch (error) {
@@ -99,7 +118,7 @@ class ApiController {
 
         switch (data?.action) {
             case 1:
-                this.socket.emit("login", data, (callbackRes) => {});
+                this.socket.emit("login", data, (callbackRes) => { });
 
                 return true;
                 break;
@@ -118,6 +137,4 @@ class ApiController {
 
 
 }
-
-
 export default ApiController;

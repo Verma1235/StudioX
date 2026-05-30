@@ -40,6 +40,24 @@ const functionDescription = [
             "this function required email and password to login into StudioX account, if login succefully into account then return it true other wise false.",
         return: "boolean"
     },
+    {
+        functionName: "logout",
+        inputParameters: {
+            action: "logout"
+        },
+        description:
+            "this function required action='logout' as arrgument and return true or false, if return true then logout sucess other wise if observation false then logout unsuccessfull.",
+        return: "boolean"
+    },
+    {
+        functionName: "getTokenAndAuthUser",
+        inputParameters: {
+            action: "getTokenAndAuthUser"
+        },
+        description:
+            "This function runs before login or logout. It checks whether the user's authentication token is valid. If the token is valid, the user is already logged in and should not be asked to log in again. If the token is expired, invalid, or unavailable, the user is not logged in and should be asked for their email and password. The result of this verification determines whether login or logout actions are permitted.",
+        return: "object"
+    },
 
 ];
 
