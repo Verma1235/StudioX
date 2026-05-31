@@ -48,6 +48,7 @@ async function loginintoaccount(data) {
     return { backend_status: response?.success, fronted_status: !!response2, message: response?.success ? "Token generated successfully" : response?.message, };
 }
 
+
 async function logout(data) {
     const socketAgent = new socketController(data?.socket);
     const response = await socketAgent.logout();
@@ -57,7 +58,7 @@ async function logout(data) {
 
 async function getTokenAndAuthUser(data) {
     const api = new ApiController(data?.socket);
-    const res = await api.getRequest("/api/token", true);
+    const res = await api.getRequest("/token", true);
 
     console.log("RESPONSE OF TOKEN AUTH: ", res);
 
@@ -65,7 +66,137 @@ async function getTokenAndAuthUser(data) {
 
 }
 
-export { getWeatherDetails, toggleLight, dbuserquery, loginintoaccount, logout, getTokenAndAuthUser };
+async function navigateInto(data) {
+    const socketAgent = new socketController(data?.socket);
+    const response = await socketAgent.navigateInto(Number(data?.target));
+    // console.log("Navigation res: ",response);
+    return response || "Unable to perform tasks";
+}
+
+async function tasks(data) {
+    if (!data?.target) {
+        console.log("TASKS DATA: ", data)
+        return -1;
+    }
+    return new Promise((resolve) => {
+        const typeofTarget = typeof data?.target;
+        if (typeofTarget.toLowerCase() != 'string') {
+            resolve("Not valid input provided || please provide string. word that you want to perform tasks");
+        }
+        const target = data.target.toLowerCase().trim();
+        const intents = [
+            {
+                id: 1,
+                keywords: [
+                    "home",
+                    "homepage",
+                    "home page",
+                    "landing page",
+                    "main page",
+                    "main screen",
+                    "home screen",
+                    "start page",
+                ],
+            },
+            {
+                id: 2,
+                keywords: [
+                    "side menu",
+                    "sidebar",
+                    "menu",
+                    "navigation menu",
+                    "nav menu",
+                    "drawer",
+                    "hamburger menu",
+                    "left menu",
+                    "side panel",
+                ],
+            },
+            {
+                id: 3,
+                keywords: [
+                    // Login
+                    "login",
+                    "log in",
+                    "signin",
+                    "sign in",
+                    "login page",
+                    "sign in page",
+                    "authentication",
+                    "authenticate",
+                    "user login",
+                    "member login",
+                    "account login",
+                    "access account",
+                    "open login",
+                    "go to login",
+                    "take me to login",
+                    "show login screen",
+                    "login screen",
+                    "open sign in",
+                    "enter account",
+                    "log into account",
+
+                    // Signup / Register
+                    "signup",
+                    "sign up",
+                    "register",
+                    "registration",
+                    "register account",
+                    "create account",
+                    "new account",
+                    "create new account",
+                    "join",
+                    "join now",
+                    "open signup",
+                    "open sign up",
+                    "go to signup",
+                    "go to sign up",
+                    "signup page",
+                    "sign up page",
+                    "registration page",
+                    "register page",
+                    "show signup screen",
+                    "signup screen",
+                    "create profile",
+                    "make account",
+                    "open registration",
+
+                    // Natural language variations
+                    "i want to login",
+                    "let me login",
+                    "log me in",
+                    "sign me in",
+                    "access my account",
+                    "already have an account",
+                    "existing user",
+                    "i want to signup",
+                    "i want to register",
+                    "create my account",
+                    "sign me up",
+                    "register me",
+                    "new user",
+                    "i don't have an account",
+                    "take me to registration",
+                    "make a new account"
+                ],
+            }
+        ];
+
+        for (const intent of intents) {
+            if (intent.keywords.some(keyword => target.includes(keyword))) {
+                resolve(intent.id);
+            }
+        }
+
+        resolve(-1);
+
+    });
+
+}
+
+
+export { getWeatherDetails, toggleLight, dbuserquery, loginintoaccount, logout, getTokenAndAuthUser, navigateInto, tasks };
 
 
 

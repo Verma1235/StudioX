@@ -23,8 +23,17 @@ class socketController {
 
     }
 
-    validateToken = async () => {
-        // const res=await 
+    navigateInto = async (data = 1) => {
+        return new Promise((resolve) => {
+            try {
+                this.socket.emit("navigator", { action: Number(data) }, (callback) => {
+                    resolve(callback?.message || "Unable to perform task !! incompleted !!")
+                });
+            } catch (error) {
+                resolve("Navigation faild!");
+
+            }
+        });
     }
 }
 

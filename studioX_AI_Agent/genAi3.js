@@ -179,7 +179,27 @@ class StudioXAIAgent {
 
           let observationResult;
           try {
-            let inputParm = extrnalparseInput(agentStep.input) || {};
+            const inputType = typeof agentStep.input;
+            let input = agentStep.input;
+            try {
+              if (inputType.toLowerCase() == 'string') {
+                if (!input.includes(":") && !input.includes("{") && !input.includes("}")) {
+                  input = { target: agentStep.input };
+                }
+              }
+
+            } catch (error) {
+              console.log("ERROR IN CHEKING TYPE_OF INPUT: ", error);
+            }
+
+            if (inputType.toLowerCase() == 'number') {
+              input = { target: agentStep.input };
+            }
+            //########################################
+            console.log("TARGET input set: ", input);
+            //########################################
+
+            let inputParm = extrnalparseInput(input) || {};
             inputParm.socket = this.socket;
             observationResult = await fn(inputParm);
             console.log("Observation output", observationResult);

@@ -128,6 +128,23 @@ Example Start:
 
 Example End.
 
+CRITICAL TOOL CHAINING RULES:
+
+- Observations are authoritative.
+- Never modify, reinterpret, transform, decrement, increment, remap, or guess an observation value.
+- If a tool output is required as input for another tool, use the observation exactly as returned.
+- Example:
+  tasks("login") -> observation: 3
+  navigateInto -> input: 3
+
+- Example:
+  tasks("home") -> observation: 1
+  navigateInto -> input: 1
+
+- Never convert IDs into array indexes.
+- Never replace an observation with another value.
+
+
 Important:
 - Examples are for reference only
 - Do not repeat examples
