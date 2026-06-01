@@ -89,8 +89,6 @@ const isDBconnected = async () => {
     return false;
   }
 };
-
-
 // Check if body exists
 const isBodyEmpty = (req) => {
   if (!req.body || Object.keys(req.body).length === 0) {

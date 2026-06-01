@@ -2,23 +2,14 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import ApiController from "../apidata/ApiController";
 import { Toast } from "../dashboardComponents/ToastContainer";
-import {
-  FaUserShield,
-  FaToggleOn,
-  FaToggleOff,
-  FaSave,
-  FaShieldAlt,
-  FaComments,
-} from "react-icons/fa";
+import { FaUserShield, FaSave, FaShieldAlt, FaComments } from "react-icons/fa";
 
 const SettingsControl = () => {
-  // Navigation Tabs state
   const [activeTab, setActiveTab] = useState("auth");
 
-  // API initial database response tracking fallback data
   const databasePayload = {
     success: true,
-    message: "settings fetched successfully from database ",
+    message: "settings fetched successfully from database",
     data: [
       {
         settings_id: 1,
@@ -38,23 +29,24 @@ const SettingsControl = () => {
     ],
   };
 
-  // State initialization extracting directly from your "data[0]" structure
   const [settings, setSettings] = useState(databasePayload.data[0]);
 
-  // Fetch application status rules on load
   useEffect(() => {
     try {
       const api = new ApiController();
+
       const fetchSettings = async () => {
         const data = await api.getRequest("/settings");
+
         if (!data || !data.data || data.data.length === 0) {
           setSettings(databasePayload.data[0]);
           Toast("Error occurred in fetching settings !!", "i", 2000);
           return;
         }
+
         setSettings(data.data[0]);
-        console.log("Loaded Settings:", data.data[0]);
       };
+
       fetchSettings();
     } catch (error) {
       console.error(error);
@@ -62,7 +54,6 @@ const SettingsControl = () => {
     }
   }, []);
 
-  // Handler to toggle switch fields seamlessly between 0 and 1
   const handleToggle = (fieldName) => {
     setSettings((prev) => ({
       ...prev,
@@ -70,265 +61,286 @@ const SettingsControl = () => {
     }));
   };
 
-  // Handle Form Submission via In-Place PUT request
   const handleSubmit = (e) => {
-    e.preventDefault(); // Stop native page reload routing
-    console.log("Sending Updated Settings Array:", settings);
+    e.preventDefault();
 
     try {
       const api = new ApiController();
-      // CLEAN FIX: Dispatches payload securely via putRequest channel
-      const updatesetting = async () => {
+
+      const updateSetting = async () => {
         const response = await api.putRequest("/saveSettings", settings);
-         
+
         if (!response) {
           Toast("Error in saving settings", "i", 2000);
           return;
         }
-        console.log(response)
-        Toast(response?.message || "Successfully updated settings !!", "s", 2000);
+
+        Toast(
+          response?.message || "Successfully updated settings !!",
+          "s",
+          2000,
+        );
       };
-      updatesetting();
-      
+
+      updateSetting();
     } catch (error) {
-      console.error("Submission Error:", error);
+      console.error(error);
       Toast("Unexpected error in saving settings !!", "e", 3000);
     }
   };
 
-  // Framer Motion Animation Settings
   const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: {
+      opacity: 0,
+      y: 15,
+    },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: {
+        duration: 0.3,
+      },
     },
   };
 
   const menuItems = [
-    { id: "auth", label: "Authentication Systems", icon: <FaShieldAlt /> },
-    { id: "roles", label: "Portal Access Roles", icon: <FaUserShield /> },
-    { id: "comms", label: "Alerts & Notifications", icon: <FaComments /> },
+    {
+      id: "auth",
+      label: "Authentication",
+      icon: <FaShieldAlt />,
+    },
+    {
+      id: "roles",
+      label: "Access Roles",
+      icon: <FaUserShield />,
+    },
+    {
+      id: "comms",
+      label: "Notifications",
+      icon: <FaComments />,
+    },
+  ];
+
+  const SettingRow = ({ title, description, enabled, onToggle }) => (
+    <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 transition-all hover:shadow-sm dark:border-slate-700 dark:bg-slate-900">
+      <div className="flex-1 pr-4">
+        <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
+          {title}
+        </h4>
+
+        {description && (
+          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            {description}
+          </p>
+        )}
+      </div>
+
+      <button
+        type="button"
+        onClick={onToggle}
+        className={`relative h-7 w-12 rounded-full transition-colors duration-300 ${
+          enabled ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-700"
+        }`}
+      >
+        <span
+          className={`absolute top-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md transition-all duration-300 ${
+            enabled ? "translate-x-5" : "translate-x-0.5"
+          }`}
+        >
+          {enabled && (
+            <svg
+              className="h-3 w-3 text-emerald-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth={3}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          )}
+        </span>
+      </button>
+    </div>
+  );
+
+  const authFields = [
+    {
+      id: "login",
+      label: "Master Login Gateway",
+      desc: "Enable or disable all login actions globally.",
+    },
+    {
+      id: "logout",
+      label: "Master Logout Routing",
+      desc: "Allow users to terminate active sessions.",
+    },
+    {
+      id: "signup",
+      label: "Public Registration",
+      desc: "Allow new users to create accounts.",
+    },
+  ];
+
+  const roleFields = [
+    {
+      id: "user_login",
+      label: "Client / User Access",
+    },
+    {
+      id: "employee_login",
+      label: "Employee Access",
+    },
+    {
+      id: "admin_login",
+      label: "Admin Access",
+    },
+    {
+      id: "coadmin_login",
+      label: "Co-Admin Access",
+    },
+    {
+      id: "developer_login",
+      label: "Developer Access",
+    },
+  ];
+
+  const communicationFields = [
+    {
+      id: "sms_allow",
+      label: "SMS Gateway",
+      desc: "Enable SMS notifications and alerts.",
+    },
+    {
+      id: "notificaton_allow",
+      label: "Push Notifications",
+      desc: "Enable application push notifications.",
+    },
+    {
+      id: "socketio_connection",
+      label: "Socket.io Connection",
+      desc: "Enable real-time communication channels.",
+    },
+    {
+      id: "warning_msg",
+      label: "Warning Alerts",
+      desc: "Display system-wide warnings and notices.",
+    },
   ];
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 py-1">
-      {/* SECTION HEADER */}
-      <div className="mb-10">
-        <p className="text-pink-300 uppercase tracking-[4px] text-sm">
-          System Control Panel
-        </p>
-        {/* <h2 className="text-4xl md:text-5xl font-bold mt-2 bg-gradient-to-r from-white to-purple-300 bg-clip-text text-transparent">
-          Database Global Rules
-        </h2> */}
-      </div>
+    <div className="mx-auto w-full max-w-7xl p-4 md:p-6 ">
+      {/* <div className="mb-6">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+          System Settings
+        </h1>
 
-      {/* MAIN CONTAINER */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-        {/* LEFT MENU - TABS CONTAINER */}
-        <div className="lg:col-span-1 flex flex-col gap-3 rounded-[30px] border border-white/10 bg-white/5 backdrop-blur-md p-4">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setActiveTab(item.id)}
-              className={`
-                w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-sm font-medium tracking-wide transition-all duration-300
-                ${
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          Manage authentication, access permissions, and communication settings.
+        </p>
+      </div> */}
+
+      <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
+        {/* Sidebar */}
+        <div className="h-fit rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+          <div className="space-y-2">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveTab(item.id)}
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
                   activeTab === item.id
-                    ? "bg-gradient-to-r from-[#784069] to-[#d37bcf] text-white shadow-lg shadow-pink-500/20"
-                    : "text-white/60 hover:bg-white/5 hover:text-white"
-                }
-              `}
-            >
-              <span className="text-lg">{item.icon}</span>
-              {item.label}
-            </button>
-          ))}
+                    ? "bg-violet-600 text-white shadow-md"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                }`}
+              >
+                <span className="text-base">{item.icon}</span>
+                {item.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* RIGHT CONTENT - GLASSMORPHIC FORM PANEL */}
+        {/* Content */}
         <motion.div
+          key={activeTab}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          key={activeTab}
-          className="lg:col-span-3 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-md p-6 md:p-10 relative overflow-hidden shadow-2xl"
+          className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
         >
-          {/* Subtle Decorative Inner Light Glow */}
-          <div className="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
+          <form onSubmit={handleSubmit}>
+            {/* Header */}
+            <div className="border-b border-slate-200 px-6 py-5 dark:border-slate-700">
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+                {activeTab === "auth" && "Authentication Settings"}
 
-          <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-            {/* TAB 1: AUTHENTICATION CONFIGURATION */}
-            {activeTab === "auth" && (
-              <div className="space-y-5">
-                <h3 className="text-2xl font-semibold mb-6 flex items-center gap-3 text-pink-300">
-                  <FaShieldAlt className="text-pink-300 text-xl" /> Gatekeeper
-                  Actions
-                </h3>
+                {activeTab === "roles" && "Access Role Management"}
 
-                {[
-                  {
-                    id: "login",
-                    label: "Master Login Gateway",
-                    desc: "Allow overall user authentication actions globally.",
-                  },
-                  {
-                    id: "logout",
-                    label: "Master Logout Routing",
-                    desc: "Allow execution parameters for ending active sessions.",
-                  },
-                  {
-                    id: "signup",
-                    label: "Public New Registrations",
-                    desc: "Enable or restrict public visitors from building new profiles.",
-                  },
-                ].map((field) => (
-                  <div
+                {activeTab === "comms" && "Notifications & Communication"}
+              </h2>
+
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Configure application behavior and access controls.
+              </p>
+            </div>
+
+            {/* Content */}
+            <div className="space-y-4 p-6">
+              {activeTab === "auth" &&
+                authFields.map((field) => (
+                  <SettingRow
                     key={field.id}
-                    className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all duration-300"
-                  >
-                    <div>
-                      <h4 className="font-medium text-white/90">
-                        {field.label}
-                      </h4>
-                      <p className="text-sm text-white/50 mt-1">{field.desc}</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleToggle(field.id)}
-                      className="text-4xl transition-colors duration-200 text-pink-400 focus:outline-none"
-                    >
-                      {settings[field.id] === 1 ? (
-                        <FaToggleOn />
-                      ) : (
-                        <FaToggleOff className="text-white/30" />
-                      )}
-                    </button>
-                  </div>
+                    title={field.label}
+                    description={field.desc}
+                    enabled={settings[field.id] === 1}
+                    onToggle={() => handleToggle(field.id)}
+                  />
                 ))}
-              </div>
-            )}
 
-            {/* TAB 2: PORTAL ROLES LOGINS */}
-            {activeTab === "roles" && (
-              <div className="space-y-5">
-                <h3 className="text-2xl font-semibold mb-6 flex items-center gap-3 text-pink-300">
-                  <FaUserShield className="text-pink-300 text-xl" /> Specific
-                  Identity Routing
-                </h3>
-
-                {[
-                  { id: "user_login", label: "Client/User Access" },
-                  { id: "employee_login", label: "Employee Team Access" },
-                  { id: "admin_login", label: "Master Admin Entrance" },
-                  { id: "coadmin_login", label: "Co-Admin Assistance Gateway" },
-                  {
-                    id: "developer_login",
-                    label: "Developer Configuration Root",
-                  },
-                ].map((field) => (
-                  <div
+              {activeTab === "roles" &&
+                roleFields.map((field) => (
+                  <SettingRow
                     key={field.id}
-                    className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all duration-300"
-                  >
-                    <div>
-                      <h4 className="font-medium text-white/90">
-                        {field.label}
-                      </h4>
-                      <p className="text-sm text-white/50 mt-1">
-                        Status database rule flag parameter settings state.
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleToggle(field.id)}
-                      className="text-4xl transition-colors duration-200 text-pink-400 focus:outline-none"
-                    >
-                      {settings[field.id] === 1 ? (
-                        <FaToggleOn />
-                      ) : (
-                        <FaToggleOff className="text-white/30" />
-                      )}
-                    </button>
-                  </div>
+                    title={field.label}
+                    description="Control login access for this role."
+                    enabled={settings[field.id] === 1}
+                    onToggle={() => handleToggle(field.id)}
+                  />
                 ))}
-              </div>
-            )}
 
-            {/* TAB 3: ALERTS & REAL-TIME CONNECTIONS */}
-            {activeTab === "comms" && (
-              <div className="space-y-5">
-                <h3 className="text-2xl font-semibold mb-6 flex items-center gap-3 text-pink-300">
-                  <FaComments className="text-pink-300 text-xl" /> Communication
-                  Engines
-                </h3>
-
-                {[
-                  {
-                    id: "sms_allow",
-                    label: "SMS Transaction Gateway",
-                    desc: "Allow sending text messages directly to devices via standard API pipeline.",
-                  },
-                  {
-                    id: "notificaton_allow",
-                    label: "Global Push Notifications",
-                    desc: "Dispatch real-time UI/UX app notification bubbles over layouts.",
-                  },
-                  {
-                    id: "socketio_connection",
-                    label: "Socket.io WebSockets Engine",
-                    desc: "Maintains alive low-latency persistent handshake loops for chats.",
-                  },
-                  {
-                    id: "warning_msg",
-                    label: "System Threat & Warning Alerts",
-                    desc: "Broadcast immediate layout restrictions or server warning messages.",
-                  },
-                ].map((field) => (
-                  <div
+              {activeTab === "comms" &&
+                communicationFields.map((field) => (
+                  <SettingRow
                     key={field.id}
-                    className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all duration-300"
-                  >
-                    <div>
-                      <h4 className="font-medium text-white/90">
-                        {field.label}
-                      </h4>
-                      <p className="text-sm text-white/50 mt-1">{field.desc}</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleToggle(field.id)}
-                      className="text-4xl transition-colors duration-200 text-pink-400 focus:outline-none"
-                    >
-                      {settings[field.id] === 1 ? (
-                        <FaToggleOn />
-                      ) : (
-                        <FaToggleOff className="text-white/30" />
-                      )}
-                    </button>
-                  </div>
+                    title={field.label}
+                    description={field.desc}
+                    enabled={settings[field.id] === 1}
+                    onToggle={() => handleToggle(field.id)}
+                  />
                 ))}
-              </div>
-            )}
+            </div>
 
-            {/* FORM FOOTER ACTION BAR */}
-            <div className="pt-4 border-t border-white/10 flex items-center justify-end gap-4">
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 border-t border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
               <button
                 type="button"
                 onClick={() => setSettings(databasePayload.data[0])}
-                className="px-6 py-3.5 rounded-xl text-sm font-medium text-white/70 hover:text-white transition-colors duration-300"
+                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800"
               >
                 Reset
               </button>
 
               <button
                 type="submit"
-                className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#784069] to-[#d37bcf] text-sm font-semibold tracking-wide text-white hover:opacity-90 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-lg shadow-pink-500/10"
+                className="flex items-center gap-2 rounded-lg bg-violet-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-violet-700 active:scale-95"
               >
                 <FaSave />
-                Update
+                Save Changes
               </button>
             </div>
           </form>

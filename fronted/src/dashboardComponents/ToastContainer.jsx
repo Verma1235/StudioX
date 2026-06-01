@@ -19,7 +19,11 @@ const ToastContainer = ({ setrole }) => {
 
       setToasts((prev) => [...prev, { id, message, type }]);
       if (!!role) {
-        setrole(role);
+        if (role == "0") {
+          setrole(0);
+        } else {
+          setrole(role);
+        }
       }
 
       setTimeout(() => {

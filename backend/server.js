@@ -10,6 +10,7 @@ import apiRouter from "./routes/apiRoutes.js";
 import authRouter from "./routes/authRoutes.js";
 import db from "./config/sqlDb.js";
 import authMiddleware from "./middleware/authMiddleware.js";
+
 dotenv.config();
 
 /* ================= PATH ================= */
@@ -24,9 +25,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: "*", credentials: true }));
 
-// Middleware & routes
 
 app.use("/", genRouter);
+
+
 
 app.use(authMiddleware);
 app.use("/auth", authRouter);

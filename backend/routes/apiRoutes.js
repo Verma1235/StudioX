@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/users", fetchUsers);
 router.get("/cardData", cardData)
-router.get("/token", tokenValidator);
+// router.get("/token", tokenValidator);
 router.get("/options", assignOptions)
 router.get("/alloptions", fetchAllOptions);
 router.get("/settings", generalSettings)

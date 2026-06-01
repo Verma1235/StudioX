@@ -31,7 +31,7 @@ class ApiController {
 
       return response.data;
     } catch (error) {
-      Toast(error?.response?.data?.message || "GET request failed", "d", 5000);
+      // Toast(error?.response?.data?.message || "GET request failed", "d", 5000);
       console.log(error);
       throw error;
     }
@@ -51,7 +51,7 @@ class ApiController {
 
       return response.data;
     } catch (error) {
-      Toast(error?.response?.data?.message || "POST request failed", "d", 5000);
+      // Toast(error?.response?.data?.message || "POST request failed", "d", 5000);
 
       throw error;
     }

@@ -4,7 +4,12 @@ import { Icons } from "../../svg/Icons";
 import SideOptionsBtn from "./SideOptionsBtn";
 import { useMenuItems } from "../eventhandllers/sideBtnEventHandllers";
 
-const Sidemenu = ({ sidemenuflag, setrole,toggleSideBtn,toggleFloatContainer}) => {
+const Sidemenu = ({
+  sidemenuflag,
+  setrole,
+  toggleSideBtn,
+  toggleFloatContainer,
+}) => {
   const { menuItems, handlers } = useMenuItems();
 
   return (
@@ -127,31 +132,31 @@ const Sidemenu = ({ sidemenuflag, setrole,toggleSideBtn,toggleFloatContainer}) =
           </div>
         </div>
 
-        {/* MENU ITEMS */}
+    
         <div
           className="
             relative
             z-10
-
             flex
             flex-col
             gap-2
-
             w-full
-          "
+            flex-1
+            overflow-y-auto
+            pb-2
+              "
         >
-          {menuItems.map((val, key) => {
-            return (
+          {menuItems.map((val, key) => (
+            <div key={key} className="shrink-0">
               <SideOptionsBtn
-                key={key}
                 menuItems={val}
                 setrole={setrole}
                 handlers={handlers}
                 toggleSideBtn={toggleSideBtn}
                 toggleFloatContainer={toggleFloatContainer}
               />
-            );
-          })}
+            </div>
+          ))}
         </div>
       </aside>
     </>
